@@ -1,5 +1,7 @@
 import { defineConfig } from 'vitepress'
-
+export default {
+  base: '/KnowledgeBase/',
+}
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "My Knowledge DataBase",
