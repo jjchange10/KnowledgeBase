@@ -1,10 +1,9 @@
 import { defineConfig } from 'vitepress'
-export default {
-  base: '/KnowledgeBase/',
-}
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "My Knowledge DataBase",
+  base: '/KnowledgeBase/',
   description: "this is my database",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
