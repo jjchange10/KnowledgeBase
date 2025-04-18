@@ -5,6 +5,10 @@ export default defineConfig({
   title: "My Knowledge DataBase",
   base: '/KnowledgeBase/',
   description: "this is my database",
+  head: [
+  ['meta', { name: 'keywords', content: 'vitepress, blog, docs' }],
+  ['link', { rel: 'icon', href: '/favicon.ico' }]
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -23,7 +27,9 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
+      { 
+        icon: 'github', link: 'https://github.com/jjchange10' }
+    ],
+
   }
 })
