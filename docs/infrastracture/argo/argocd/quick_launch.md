@@ -1,0 +1,102 @@
+# はじめに
+ArgoCDを利用する上で必要な項目を記載する。
+
+## quickstart
+インストールから基本的なAppilcationを利用するまでを記載
+
+### インストール
+新しいnamespace (argocd)を独自で作成し、ArgoCDサービスとアプリケーションがデプロイされる
+1. namespaceを作成
+   ```bash
+   kubectl create namespace argocd
+   ```
+
+2. ArgoCDインストール
+   ::: code-group
+   ```bash [kubectl]
+   #インストールコマンド
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   ```
+   ```bash [helm]
+   #リポジトリ追加
+   helm repo add argo https://argoproj.github.io/argo-helm
+   #インストールコマンド
+   helm upgrade --install -n argocd argocd argo/argo-cd
+
+   #vaulesを指定する場合
+    helm upgrade --install -n argocd argocd argo/argo-cd -f <valuesfile_path>/vaules.yaml
+   ```
+   ```bash [helmfile]
+   #インストールコマンド
+   helmfile -f <helmfile_path>/<helmfile_name> apply
+   ```
+   :::
+   
+3. Download Argo CD CLI
+   ArgoCDをCLIで操作できるようにargocdコマンドをインストールする
+   ```bash
+   brew install argocd
+   ```
+   
+4. Access The Argo CD API Server
+   以下の方法を使ってhttpアクセスできるように設定し、該当のURLでログインする
+   + PordForwarding
+   ```bash
+   kubectl port-forward svc/argocd-server -n argocd 8080:443
+   ```
+   + Ingress
+    Ingressリソースを個別に追加する。もしくはhelmの場合はvalues.yamlにてargocd-serverのServiceを変更する
+   
+   + LoadBalancer
+   ```bash
+   kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+   ```
+   helmの場合は、values.yamlにてargocd-serverのServiceを変更する
+   
+5. Login Using The CLI
+    + ArgoCDへのログインパスワードは自動で生成される（argocd-initial-admin-secretという名前でsecretリソースとして登録）
+    ```bash
+    argocd admin initial-password -n argocd
+    ```
+
+    + ログイン
+    adminユーザでログインする
+    ```bash
+    argocd login <ARGOCD_SERVER>
+    ```
+    
+    + パスワード変更
+    任意でパスワード変更可能
+    ```bash
+    argocd account update-password
+    ```
+
+### Application登録
+ ArgoCDのCRDであるAppilcationリソースを使ってApplicationを登録する
+ ```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: <applcation_name>
+  namespace: argocd ##argocdにすると、argocdが読み込んでくれる
+spec:
+  project: default
+  source:
+    repoURL: <リポジトリのパス>
+    path: <chartのパス>
+    targetRevision: HEAD ## branch名、HEADであればデフォルトブランチ
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+ ```
+ 
+ yamlファイルを作成後、デプロイする
+ ```bash
+ kubectl apply -f <Applicationリソースのファイル>
+ ```
+ 
+ ### Git
