@@ -44,6 +44,8 @@ export default defineConfig({
           { text: 'Python', link: '/language/python' },
           { text: 'Java', link: '/language/java' },
           { text: 'Rust', link: '/language/rust' },
+          { text: 'Go', link: '/language/go' },
+          
         ]
       },
       {
@@ -86,18 +88,31 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'はじめに', link: '/infrastracture/aws/' },
-            { text: 'コンピューティング', link: '/infrastracture/aws/computing' },
+            { text: 'IAM', link: '/infrastracture/aws/iam'},
             { text: 'ネットワーキング', link: '/infrastracture/aws/networking' },
             { text: 'lambda', link: '/infrastracture/aws/lambda' },
+            { text: 'EKS', link: '/infrastracture/aws/eks' },
           ]
         }
       ],
+
+      '/infrastracture/aws/eks': [
+        {
+          text: 'EKS',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/aws/eks/quickstart' },
+          ]
+        }
+      ],
+
       '/infrastracture/kubernetes': [
         {
           text: 'Kubernetes',
           collapsed: false,
           items: [
-            { text: 'はじめに', link: '/infrastracture/kubernetes/' },
+            { text: 'はじめに', link: '/infrastracture/kubernetes/quickstart' },
+            { text: 'Helm', link: '/infrastracture/kubernetes/helm' },
           ]
         }
       ],
@@ -120,6 +135,10 @@ export default defineConfig({
           items: [
             { text: 'はじめに', link: '/infrastracture/argo/argocd/quick_launch' },
             { text: 'Architecture', link: '/infrastracture/argo/argocd/architecture' },
+            { text: 'HTTPS化', link: '/infrastracture/argo/argocd/https' },
+            { text: 'Helm Pluginの利用方法', link: '/infrastracture/argo/argocd/helm-plugin' },
+            { text: 'Gitlab連携', link: '/infrastracture/argo/argocd/gitlab' },
+            { text: 'App of Apps', link: '/infrastracture/argo/argocd/app-of-apps' },
           ]
         }
       ],

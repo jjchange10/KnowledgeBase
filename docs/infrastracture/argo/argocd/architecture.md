@@ -1,4 +1,6 @@
 # Architecture
+まだ、勉強不足です。すみません。
+
 ## components
 ArgoCDは、以下の主要なコンポーネントで構成されています：
 
