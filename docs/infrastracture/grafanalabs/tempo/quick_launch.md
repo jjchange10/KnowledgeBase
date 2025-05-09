@@ -1,0 +1,1 @@
+# QuickStartファイル

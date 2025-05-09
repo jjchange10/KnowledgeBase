@@ -26,8 +26,8 @@ export default defineConfig({
           { text: 'GoogleCloud', link: '/infrastracture/googlecloud' },
           { text: 'Opentelemetry', link: '/infrastracture/opentelemetry' },
           { text: 'GitLab', link: '/infrastracture/gitlab' },
-          { text: 'GitHub', link: '/infrastracture/github' }
-          
+          { text: 'GitHub', link: '/infrastracture/github' },
+          { text: 'GrafanaLabs', link: '/infrastracture/grafanalabs' },
           // {
           //   text: '高度なトピック',
           //   items: [
@@ -184,6 +184,64 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'はじめに', link: '/infrastracture/github' },
+          ]
+        }
+      ],
+      '/infrastracture/grafanalabs': [
+        {
+          text: 'GrafanaLabs',
+          collapsed: false,
+          items: [
+            { text: 'Grafana', link: '/infrastracture/grafanalabs/grafana' },
+            { text: 'Loki', link: '/infrastracture/grafanalabs/loki' },
+            { text: 'Tempo', link: '/infrastracture/grafanalabs/tempo' },
+            { text: 'Prometheus', link: '/infrastracture/grafanalabs/prometheus' },
+            { text: 'Alloydb', link: '/infrastracture/grafanalabs/alloy' },
+          ]
+        }
+      ],
+      '/infrastracture/grafanalabs/grafana': [
+        {
+          text: 'Grafana',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/grafanalabs/grafana/quick_launch' },
+          ]
+        }
+      ],
+      '/infrastracture/grafanalabs/loki': [
+        {
+          text: 'Loki',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/grafanalabs/loki/quick_launch' },
+          ]
+        }
+      ],
+      '/infrastracture/grafanalabs/tempo': [
+        {
+          text: 'Tempo',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/grafanalabs/tempo/quick_launch' },
+          ]
+        }
+      ],
+      '/infrastracture/grafanalabs/prometheus': [
+        {
+          text: 'Prometheus',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/grafanalabs/prometheus/quick_launch' },
+          ]
+        }
+      ],
+      '/infrastracture/grafanalabs/alloy': [
+        {
+          text: 'Alloydb',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/grafanalabs/alloy/quick_launch' },
           ]
         }
       ],
