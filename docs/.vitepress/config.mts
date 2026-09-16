@@ -53,7 +53,9 @@ export default defineConfig({
         items: [
           { text: 'SRE', link: '/book/sre/' },
         ]
-      }
+      },
+      { text: 'Web基礎', link: '/web-basics/' },
+      { text: 'Security', link: '/security/' }
     ],
 
     search: {
@@ -278,6 +280,32 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'はじめに', link: '/books/sre/base' },
+          ]
+        }
+      ],
+      '/web-basics/': [
+        {
+          text: 'Web基礎知識',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/web-basics/' },
+            { text: 'セッション', link: '/web-basics/session' },
+            { text: 'Cookie', link: '/web-basics/cookie' },
+            { text: 'OAuth / OIDC', link: '/web-basics/oauth-oidc' },
+            { text: '暗号化', link: '/web-basics/encryption' },
+          ]
+        }
+      ],
+      '/security/': [
+        {
+          text: 'セキュリティ',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/security/' },
+            { text: 'SQLインジェクション', link: '/security/sql-injection' },
+            { text: 'XSS', link: '/security/xss' },
+            { text: 'CSRF', link: '/security/csrf' },
+            { text: '認可不備（IDOR）', link: '/security/broken-access-control' },
           ]
         }
       ]

@@ -37,6 +37,16 @@ hero:
   <div class="card-desc">技術書からの学びやメモ。</div>
 </a>
 
+<a class="simple-card" href="/KnowledgeBase/web-basics/">
+  <div class="card-title">Web基礎</div>
+  <div class="card-desc">セッション・Cookie・OAuth/OIDC・暗号化など、Webアプリの基本的な仕組み。</div>
+</a>
+
+<a class="simple-card" href="/KnowledgeBase/security/">
+  <div class="card-title">Security</div>
+  <div class="card-desc">Webアプリケーションの脆弱性と対策、実演デモ。</div>
+</a>
+
 </div>
 
 </div>
