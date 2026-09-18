@@ -116,6 +116,15 @@ export default defineConfig({
             { text: 'はじめに', link: '/infrastracture/kubernetes/quickstart' },
             { text: 'Helm', link: '/infrastracture/kubernetes/helm' },
           ]
+        },
+        {
+          text: 'Kubernetes API（Programming Kubernetes）',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/kubernetes/api/' },
+            { text: 'API基礎（Kind・GVR/GVK）', link: '/infrastracture/kubernetes/api/basics' },
+            { text: 'リクエスト処理と宣言的な状態管理', link: '/infrastracture/kubernetes/api/request-lifecycle' },
+          ]
         }
       ],
       '/infrastracture/argo': [

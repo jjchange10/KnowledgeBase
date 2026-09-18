@@ -9,6 +9,19 @@ Kubernetesは、コンテナ化されたアプリケーションのデプロイ�
 - ストレージオーケストレーション
 - 自動化されたロールアウトとロールバック
 
+## Kubernetes APIを学ぶ
+
+「クラスタの中でAPIサーバーが具体的に何をしているか」を実演デモ付きで学びたい場合は、こちらのセクションを参照してください。
+
+<div class="horizontal-cards">
+
+<a class="simple-card" href="/KnowledgeBase/infrastracture/kubernetes/api/">
+  <div class="card-title">Kubernetes API（Programming Kubernetes）</div>
+  <div class="card-desc">Kind・GVR/GVK、リクエスト処理チェーン、宣言的な状態管理をデモを触りながら学ぶ。</div>
+</a>
+
+</div>
+
 ## 公式ドキュメント
 
 Kubernetesの公式ドキュメントは以下のリソースで提供されています：
