@@ -8,6 +8,7 @@ import IdorDemo from './components/IdorDemo.vue'
 import EncryptionDemo from './components/EncryptionDemo.vue'
 import RsaDemo from './components/RsaDemo.vue'
 import WasmDemo from './components/WasmDemo.vue'
+import ActivationFunctionDemo from './components/ActivationFunctionDemo.vue'
 import type { Theme } from 'vitepress'
 
 export default {
@@ -20,5 +21,6 @@ export default {
     app.component('EncryptionDemo', EncryptionDemo)
     app.component('RsaDemo', RsaDemo)
     app.component('WasmDemo', WasmDemo)
+    app.component('ActivationFunctionDemo', ActivationFunctionDemo)
   },
 } satisfies Theme

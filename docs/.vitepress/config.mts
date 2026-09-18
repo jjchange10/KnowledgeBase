@@ -55,7 +55,8 @@ export default defineConfig({
         ]
       },
       { text: 'Web基礎', link: '/web-basics/' },
-      { text: 'Security', link: '/security/' }
+      { text: 'Security', link: '/security/' },
+      { text: 'ニューラルネットワーク', link: '/neural-network/' }
     ],
 
     search: {
@@ -306,6 +307,16 @@ export default defineConfig({
             { text: 'XSS', link: '/security/xss' },
             { text: 'CSRF', link: '/security/csrf' },
             { text: '認可不備（IDOR）', link: '/security/broken-access-control' },
+          ]
+        }
+      ],
+      '/neural-network/': [
+        {
+          text: 'ニューラルネットワーク',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/neural-network/' },
+            { text: 'パーセプトロンからニューラルネットワークへ', link: '/neural-network/perceptron-to-neural-network' },
           ]
         }
       ]

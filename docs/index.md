@@ -47,6 +47,11 @@ hero:
   <div class="card-desc">Webアプリケーションの脆弱性と対策、実演デモ。</div>
 </a>
 
+<a class="simple-card" href="/KnowledgeBase/neural-network/">
+  <div class="card-title">ニューラルネットワーク</div>
+  <div class="card-desc">パーセプトロン・活性化関数・行列計算など、Deep Learningの基礎を実演しながら学ぶ。</div>
+</a>
+
 </div>
 
 </div>
