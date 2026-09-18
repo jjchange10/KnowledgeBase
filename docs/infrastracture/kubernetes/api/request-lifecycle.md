@@ -25,27 +25,32 @@ HTTPリクエストがAPIサーバーに届くと、大きく分けて次の3段
 | `WithMaxInFlightLimit` | 同時実行中リクエスト数の制限 |
 | `WithAuthorization` | RBACなどでアクセス権限をチェック。失敗すると403 |
 
-このチェーンを通過したRESTfulなリクエストは、続けて **admission**（mutating→validating）と**validation**、最後に**etcdへの読み書き**というパイプラインに入ります。
-
-- **admission（mutating）**: 例えば `imagePullPolicy` が未指定のとき、デフォルト値を補完するなど、リクエスト内容そのものを書き換える
-- **admission（validating）+ validation**: セキュリティ設定の妥当性チェックや、対象namespaceの存在確認、DNS互換文字のチェックなど、内容が正しいかどうかを検証する
-- **etcdバックエンドのCRUDロジック**: 実際にetcdへ読み書きする。更新の場合は他ユーザーが同時に更新していないかを確認する「Optimistic Concurrency」のチェックも行われる
+このチェーンを通過したRESTfulなリクエストは、続けて**次の図の6段階**を順番に通過します。
 
 ![リクエスト処理パイプライン。API HTTP handlerからauthn&authz、Mutating admission（Mutating webhooksと連携）、Object schema validation、Validating admission（Validating webhooksと連携）を経て、最後にPersisting to etcdへ至る一直線のフロー](../../../images/k8s-api-figure2-5-request-pipeline.png)
 
 *Figure 2-5. Kubernetes API server request processing overview（『Programming Kubernetes』より）*
 
-この図がまさに、下のデモが再現している処理の流れです。Mutating admission・Validating admissionの下にある「Mutating webhooks」「Validating webhooks」は、クラスタ管理者が独自に追加できる拡張ポイントです（`MutatingAdmissionWebhook` / `ValidatingAdmissionWebhook` という名前で、実際に脚注のadmission plug-in一覧にも登場します）。
+| # | 図の箱 | やっていること |
+|---|---|---|
+| 1 | **API HTTP handler** | リクエストがAPIサーバーのHTTP処理層に到達する入り口 |
+| 2 | **authn & authz** | 「誰か」を確認（認証）→「その操作をしてよいか」を確認（認可）。失敗すると401/403 |
+| 3 | **Mutating admission** | オブジェクトの内容を**書き換える**（例: `imagePullPolicy` 未指定時にデフォルト値を補完）。「Mutating webhooks」でクラスタ管理者が独自の書き換えロジックを追加できる |
+| 4 | **Object schema validation** | 書き換え後のオブジェクトが**型として正しいか**を機械的にチェック（必須フィールドの有無、DNS互換文字、コンテナ名の重複など） |
+| 5 | **Validating admission** | 型ではなく**組織のポリシー的にOKか**を追加チェック。「Validating webhooks」でクラスタ管理者が独自ルール（例: 社内レジストリのイメージのみ許可）を追加できる |
+| 6 | **Persisting to etcd** | ここまで全段階を通過したオブジェクトが、ようやくetcdに書き込まれる。更新の場合は他ユーザーが同時に更新していないかを確認する「Optimistic Concurrency」のチェックも行われる |
+
+3〜5が特に混同しやすいポイントです。**3（Mutating）は「直す」フェーズ、4（Object schema validation）は「型として壊れていないか」というKubernetes組み込みの機械的チェック、5（Validating）は「ポリシー的にOKか」というwebhookで差し込める追加チェック**、と役割がはっきり分かれています。
 
 ## 実際に試してみる: リクエスト処理パイプライン
 
-下のデモは、`POST` でリソースを新規作成するリクエストが、認証→認可→admission→validation→etcdという順番でどう処理されるかを再現したものです。認証・認可・バリデーションをそれぞれ成功/失敗させて、どのステージでリクエストが止まり、どのHTTPステータスが返るかを確認してください。
+下のデモは、`POST` でリソースを新規作成するリクエストが、上の表と同じ6段階（API HTTP handler → authn & authz → Mutating admission → Object schema validation → Validating admission → Persisting to etcd）でどう処理されるかを再現したものです。認証・認可・スキーマ検証・ポリシーチェックをそれぞれ成功/失敗させて、どのステージでリクエストが止まり、どのHTTPステータスが返るかを確認してください。
 
 <RequestPipelineDemo />
 
 ### 何が起きたか
 
-このデモは、書籍で説明されているフィルタチェーンの**順序をそのまま**再現しています。認証が失敗すればその時点で401が返り、認可・admission・etcdへの書き込みは一切実行されません。同様に、認証・認可を通過してもバリデーションで弾かれれば、etcdには何も書き込まれずに終わります。「後段の処理まで進んで初めて前段のエラーに気づく」ということはなく、**前段のチェックを1つでも通過できなければ、後段の処理は実行されずに即座にエラーが返る**という直列パイプラインになっている点がポイントです。
+このデモは、Figure 2-5の6段階を**順序そのまま**再現しています。認証が失敗すればその時点で401が返り、認可以降のステージは一切実行されません。同様に、認証・認可を通過してもObject schema validationで型として弾かれれば422が、Validating admissionでポリシー違反として弾かれれば400が返り、いずれの場合もetcdには何も書き込まれずに終わります。「後段の処理まで進んで初めて前段のエラーに気づく」ということはなく、**前段のチェックを1つでも通過できなければ、後段の処理は実行されずに即座にエラーが返る**という直列パイプラインになっている点がポイントです。
 
 ## 宣言的な状態管理（spec / status）
 
@@ -92,7 +97,7 @@ status:
 
 ## まとめ
 
-- APIサーバーへのリクエストは、認証→（監査/偽装/同時実行数制御）→認可というフィルタチェーンを経てから、admission（mutating→validating）・validation・etcdへのCRUDというパイプラインに入る
+- APIサーバーへのリクエストは、認証→（監査/偽装/同時実行数制御）→認可というフィルタチェーンを経てから、Mutating admission→Object schema validation→Validating admission→etcdへの書き込みという6段階のパイプラインに入る
 - 各ステージは直列に並んでおり、前段で失敗すれば後段は実行されずに即座にエラーが返る
 - Kubernetesのオブジェクトは「望ましい状態（spec）」と「観測された状態（status）」を分けて持ち、コントローラが継続的にreconcileループを回すことで両者を一致させ続ける
 - この宣言的な設計により、障害からの自動復旧（self-healing）が実現されている
