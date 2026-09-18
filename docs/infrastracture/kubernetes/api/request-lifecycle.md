@@ -31,6 +31,12 @@ HTTPリクエストがAPIサーバーに届くと、大きく分けて次の3段
 - **admission（validating）+ validation**: セキュリティ設定の妥当性チェックや、対象namespaceの存在確認、DNS互換文字のチェックなど、内容が正しいかどうかを検証する
 - **etcdバックエンドのCRUDロジック**: 実際にetcdへ読み書きする。更新の場合は他ユーザーが同時に更新していないかを確認する「Optimistic Concurrency」のチェックも行われる
 
+![リクエスト処理パイプライン。API HTTP handlerからauthn&authz、Mutating admission（Mutating webhooksと連携）、Object schema validation、Validating admission（Validating webhooksと連携）を経て、最後にPersisting to etcdへ至る一直線のフロー](../../../images/k8s-api-figure2-5-request-pipeline.png)
+
+*Figure 2-5. Kubernetes API server request processing overview（『Programming Kubernetes』より）*
+
+この図がまさに、下のデモが再現している処理の流れです。Mutating admission・Validating admissionの下にある「Mutating webhooks」「Validating webhooks」は、クラスタ管理者が独自に追加できる拡張ポイントです（`MutatingAdmissionWebhook` / `ValidatingAdmissionWebhook` という名前で、実際に脚注のadmission plug-in一覧にも登場します）。
+
 ## 実際に試してみる: リクエスト処理パイプライン
 
 下のデモは、`POST` でリソースを新規作成するリクエストが、認証→認可→admission→validation→etcdという順番でどう処理されるかを再現したものです。認証・認可・バリデーションをそれぞれ成功/失敗させて、どのステージでリクエストが止まり、どのHTTPステータスが返るかを確認してください。

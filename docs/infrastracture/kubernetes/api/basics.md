@@ -6,6 +6,12 @@ Kubernetesのオブジェクトモデルには、独特の語彙がいくつか�
 
 Kubernetesのクラスタは複数のノードから構成され、コントロールプレーン（マスターノード）にはAPIサーバー・controller manager・schedulerが存在します。中でも**APIサーバーは、分散ストレージであるetcdと直接やり取りする唯一のコンポーネント**です。
 
+![Kubernetesアーキテクチャ概要。MasterのAPI Serverがetcd・Controller Manager・Schedulerとつながり、各WorkerのkubeletおよびkubectlがAPI Serverと通信する](../../../images/k8s-api-figure2-1-architecture.png)
+
+*Figure 2-1. Kubernetes architecture overview（『Programming Kubernetes』より）*
+
+図の通り、`kubectl` や各Workerの `kubelet` は直接etcdを触ることはなく、必ずAPI Serverを経由します。コントロールプレーン内の Controller Manager や Scheduler も例外ではありません。
+
 APIサーバーの役割は次の2つに集約されます。
 
 - **Kubernetes APIを提供する**: クラスタ内部（コントロールプレーン自身やワーカーノード、アプリ）からも、外部（`kubectl`など）からも、このAPIを通じてやり取りする
@@ -30,7 +36,19 @@ APIサーバーの役割は次の2つに集約されます。
 | `PATCH` | 既存リソースの部分更新 |
 | `DELETE` | リソースの削除（復元不可） |
 
-例えば `kubectl -n dev get pods` は、内部的には `GET /api/v1/namespaces/dev/pods` というHTTPリクエストに変換されています。
+例えば `kubectl -n dev get pods` は、内部的には `GET /api/v1/namespaces/dev/pods` というHTTPリクエストに変換されています。実際のKubernetes APIリファレンスでも、この操作は次のように定義されています。
+
+![Kubernetes APIリファレンスの「List Pod」のページ。HTTP RequestとしてGET /api/v1/namespaces/{namespace}/podsが示され、Path ParametersやQuery Parametersの一覧が表示されている](../../../images/k8s-api-figure2-2-api-reference.png)
+
+*Figure 2-2. API server HTTP interface in action: listing pods in a given namespace（『Programming Kubernetes』より）*
+
+APIリファレンスのページには、各操作のHTTPメソッド・パス・パラメータが1つ1つ定義されています。GVR/GVKの概念が分かると、このリファレンスがぐっと読みやすくなります。
+
+APIサーバーが公開しているパス空間は、`/api` と `/apis` を頂点とし、その下にAPI groupやバージョン、Resourceがぶら下がる木構造になっています。`/healthz` や `/metrics` のようにResourceと関係のない特殊なパスも存在します。
+
+![Kubernetes APIパス空間の木構造。ルートから/healthz・/metrics・/api・/apisが伸び、/api/v1の下にnodesやpods、/apis/batchの下にbatch/v1・batch/v2alpha1とそれぞれのResourceが続く](../../../images/k8s-api-figure2-4-api-tree.png)
+
+*Figure 2-4. An example Kubernetes API space（『Programming Kubernetes』より）*
 
 ## 用語の整理
 
@@ -40,6 +58,10 @@ APIサーバーの役割は次の2つに集約されます。
 - **Resource**: 小文字・複数形の単語（例: `pods`）で、あるKindに対するCRUD操作を表すHTTPエンドポイント（パス）の集合を指す
 
 Resourceは常にAPI groupとVersionに紐づいており、これをまとめて **GroupVersionResource（GVR）** と呼びます。同様にKindも **GroupVersionKind（GVK）** で識別されます。GVKが実際にどのHTTPパス（GVR）で提供されるかを対応付ける処理を**REST mapping**と呼びます。
+
+![GVRの分解図。/apis/batch/v1/namespaces/$NAMESPACE/jobsというパスのうち、batchがGroup、v1がVersion、jobsがResourceであることを矢印で示している](../../../images/k8s-api-figure2-3-gvr.png)
+
+*Figure 2-3. Kubernetes API—GroupVersionResource（GVR）（『Programming Kubernetes』より）*
 
 ### Cohabitation（複数のAPI groupに存在するKind）
 
