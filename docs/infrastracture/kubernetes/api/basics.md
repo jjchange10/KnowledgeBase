@@ -10,7 +10,19 @@ Kubernetesのクラスタは複数のノードから構成され、コントロ�
 
 *Figure 2-1. Kubernetes architecture overview（『Programming Kubernetes』より）*
 
-図の通り、`kubectl` や各Workerの `kubelet` は直接etcdを触ることはなく、必ずAPI Serverを経由します。コントロールプレーン内の Controller Manager や Scheduler も例外ではありません。
+| 図の要素 | 役割 |
+|---|---|
+| **Master**（コントロールプレーン） | APIサーバー・Controller Manager・Schedulerが動くノード |
+| **API Server** | 唯一etcdと直接やり取りするコンポーネント。すべての読み書きの窓口 |
+| **etcd** | クラスタの状態を永続化する分散ストレージ |
+| **Controller Manager** | Deployment controllerなど各種コントローラを動かし、specとstatusの差分を埋め続ける（reconcile） |
+| **Scheduler** | 新しく作られたPodをどのWorkerノードで動かすか決定する |
+| **Worker**（図では4つ） | 実際にコンテナが動くノード |
+| **kubelet** | 各Workerに1つずつ常駐し、API Serverと通信してそのノード上のコンテナを管理するエージェント |
+| **Native app** | クラスタ内で動きながら、自分自身もAPI Serverと直接やり取りするアプリ（後の章で扱うclient-goを使うプログラムなど） |
+| **kubectl** | クラスタ外からAPI Serverを叩く、人間向けのCLIクライアント |
+
+図の通り、`kubectl`・`kubelet`・`Native app` はいずれも直接etcdを触ることはなく、**必ずAPI Serverを経由**します。コントロールプレーン内のController ManagerやSchedulerも例外ではありません。
 
 APIサーバーの役割は次の2つに集約されます。
 
@@ -50,6 +62,13 @@ APIサーバーが公開しているパス空間は、`/api` と `/apis` を頂�
 
 *Figure 2-4. An example Kubernetes API space（『Programming Kubernetes』より）*
 
+| ルート直下の分岐 | 何を表すか |
+|---|---|
+| `/healthz` | ヘルスチェック用の特殊パス。特定のResourceとは無関係 |
+| `/metrics` | メトリクス取得用の特殊パス。これもResourceとは無関係 |
+| `/api` | **コアグループ**。この下は `/api/v1` のみで、`nodes`・`pods`・`services` などが続く |
+| `/apis` | **名前付きグループ**。この下に `/apis/batch` のようなグループ名、さらにその下に `/apis/batch/v1` のようなバージョン、最後に `jobs` などのResourceが続く |
+
 ## 用語の整理
 
 - **Kind**: エンティティの型。`Pod` や `Endpoints` のような**Object**（永続的な実体）、`PodList` のような**List**（一覧）、`/binding` や `/scale` のような**特殊用途のKind**の3種類がある
@@ -62,6 +81,16 @@ Resourceは常にAPI groupとVersionに紐づいており、これをまとめ�
 ![GVRの分解図。/apis/batch/v1/namespaces/$NAMESPACE/jobsというパスのうち、batchがGroup、v1がVersion、jobsがResourceであることを矢印で示している](../../../images/k8s-api-figure2-3-gvr.png)
 
 *Figure 2-3. Kubernetes API—GroupVersionResource（GVR）（『Programming Kubernetes』より）*
+
+図の矢印が指しているのは、次の3つだけです（`$NAMESPACE` には矢印が付いていない点に注意）。
+
+| 図のラベル | 意味 | この例（`/apis/batch/v1/namespaces/$NAMESPACE/jobs`）での値 |
+|---|---|---|
+| **Group** | どのAPI groupに属するか | `batch` |
+| **Version** | そのAPI groupの何バージョンか | `v1` |
+| **Resource** | HTTPエンドポイントとしてのリソース名（複数形） | `jobs` |
+
+**GVR = この3つ（Group + Version + Resource）の組み合わせ**、というのがこの図の言いたいことです。`$NAMESPACE` はパスの一部ではありますが、GVR自体の構成要素ではなく「そのGVRをどの名前空間に対して呼び出すか」という**呼び出し時のスコープ指定**でしかありません。GVKも同じ考え方で、Group・Version・**Kind**（Resourceの代わりにKind）の3つの組み合わせです。
 
 ### Cohabitation（複数のAPI groupに存在するKind）
 
