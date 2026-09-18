@@ -94,7 +94,15 @@ Resourceは常にAPI groupとVersionに紐づいており、これをまとめ�
 
 ### Cohabitation（複数のAPI groupに存在するKind）
 
-`Deployment` はもともと `extensions` グループのalpha機能として登場し、後に専用の `apps` グループでGAになりました。このように同じ名前のKindが複数のAPI groupに同時に存在する状態を **cohabitation** と呼びます（`Ingress`/`NetworkPolicy` と `extensions`/`networking.k8s.io`、`Event` と core/`events.k8s.io` など）。
+`Deployment` はもともと `extensions` グループのalpha機能として登場し、後に専用の `apps` グループでGAになりました。このように同じ名前のKindが複数のAPI groupに同時に存在する状態を **cohabitation** と呼びます。書籍で挙げられている実例は次の3組です。
+
+| Kind | 存在するAPI group |
+|---|---|
+| `Deployment`, `DaemonSet`, `ReplicaSet` | `extensions` ⇔ `apps` |
+| `Ingress`, `NetworkPolicy` | `extensions` ⇔ `networking.k8s.io` |
+| `Event` | core（`v1`） ⇔ `events.k8s.io` |
+
+いずれも「新しいバージョンが出た後もしばらく旧グループ名でアクセスできるようにする」という移行期の互換性維持のための仕組みで、多くはありません。
 
 ## 実際に試してみる: GVR/GVKからHTTPパスを組み立てる
 
