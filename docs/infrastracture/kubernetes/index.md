@@ -20,6 +20,11 @@ Kubernetesは、コンテナ化されたアプリケーションのデプロイ�
   <div class="card-desc">Kind・GVR/GVK、リクエスト処理チェーン、宣言的な状態管理をデモを触りながら学ぶ。</div>
 </a>
 
+<a class="simple-card" href="/KnowledgeBase/infrastracture/kubernetes/client-go/">
+  <div class="card-title">client-go基礎（Programming Kubernetes）</div>
+  <div class="card-desc">Kubernetes APIをGoから叩くclient-goの基礎。クライアントの作り方、Informer、Scheme/RESTMapperの仕組み。</div>
+</a>
+
 </div>
 
 ## 公式ドキュメント

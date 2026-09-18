@@ -105,4 +105,4 @@ status:
 - Kubernetesのオブジェクトは「望ましい状態（spec）」と「観測された状態（status）」を分けて持ち、コントローラが継続的にreconcileループを回すことで両者を一致させ続ける
 - この宣言的な設計により、障害からの自動復旧（self-healing）が実現されている
 
-次の章では、この宣言的な仕組みをGoプログラムから扱うための標準ライブラリ「client-go」を扱います。
+次は、この宣言的な仕組みをGoプログラムから扱うための標準ライブラリ「[client-go基礎](/infrastracture/kubernetes/client-go/)」に進みます。

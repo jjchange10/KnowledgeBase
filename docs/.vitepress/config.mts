@@ -125,6 +125,17 @@ export default defineConfig({
             { text: 'API基礎（Kind・GVR/GVK）', link: '/infrastracture/kubernetes/api/basics' },
             { text: 'リクエスト処理と宣言的な状態管理', link: '/infrastracture/kubernetes/api/request-lifecycle' },
           ]
+        },
+        {
+          text: 'client-go基礎（Programming Kubernetes）',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/kubernetes/client-go/' },
+            { text: 'クライアントの作り方', link: '/infrastracture/kubernetes/client-go/getting-started' },
+            { text: 'Goの中のオブジェクトとClient Set', link: '/infrastracture/kubernetes/client-go/objects-and-clientsets' },
+            { text: 'InformerとWork Queue', link: '/infrastracture/kubernetes/client-go/informers-workqueue' },
+            { text: 'API Machinery（Kind・GVK・GVR・Scheme）', link: '/infrastracture/kubernetes/client-go/api-machinery' },
+          ]
         }
       ],
       '/infrastracture/argo': [
