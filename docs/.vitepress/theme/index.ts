@@ -7,6 +7,7 @@ import CsrfDemo from './components/CsrfDemo.vue'
 import IdorDemo from './components/IdorDemo.vue'
 import EncryptionDemo from './components/EncryptionDemo.vue'
 import RsaDemo from './components/RsaDemo.vue'
+import WasmDemo from './components/WasmDemo.vue'
 import type { Theme } from 'vitepress'
 
 export default {
@@ -18,5 +19,6 @@ export default {
     app.component('IdorDemo', IdorDemo)
     app.component('EncryptionDemo', EncryptionDemo)
     app.component('RsaDemo', RsaDemo)
+    app.component('WasmDemo', WasmDemo)
   },
 } satisfies Theme
