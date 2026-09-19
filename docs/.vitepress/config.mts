@@ -145,6 +145,7 @@ export default defineConfig({
             { text: 'コンテナの正体（namespaces・cgroups・overlayfs）', link: '/infrastracture/kubernetes/internals/container-fundamentals' },
             { text: 'CRIとcontainerdの実際のアーキテクチャ', link: '/infrastracture/kubernetes/internals/cri-containerd' },
             { text: 'runcとOCI Runtime Spec', link: '/infrastracture/kubernetes/internals/runc' },
+            { text: '実際に手を動かす: 最小コンテナランタイム', link: '/infrastracture/kubernetes/internals/hands-on-mini-runtime' },
           ]
         }
       ],

@@ -21,6 +21,11 @@
   <div class="card-desc">config.json・create/startの2段階分離・exec fifoによる同期の仕組み。RustによるOCI実装youkiとの違いも整理。</div>
 </a>
 
+<a class="simple-card" href="/KnowledgeBase/infrastracture/kubernetes/internals/hands-on-mini-runtime">
+  <div class="card-title">実際に手を動かす: 最小コンテナランタイム</div>
+  <div class="card-desc">Goで実際に動くミニruncを実装し、namespace分離・cgroupのレース条件・create/startによる修正を実機で検証。</div>
+</a>
+
 </div>
 
 ## このセクションのスコープ
