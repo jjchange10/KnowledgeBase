@@ -16,6 +16,11 @@
   <div class="card-desc">kubeletがnamespaces/cgroupsをどう組み立てているか。CRI・containerd・shim・runcのレイヤー構造と、実際のCRI呼び出し順序をデモで確認。</div>
 </a>
 
+<a class="simple-card" href="/KnowledgeBase/infrastracture/kubernetes/internals/runc">
+  <div class="card-title">runcとOCI Runtime Spec</div>
+  <div class="card-desc">config.json・create/startの2段階分離・exec fifoによる同期の仕組み。RustによるOCI実装youkiとの違いも整理。</div>
+</a>
+
 </div>
 
 ## このセクションのスコープ

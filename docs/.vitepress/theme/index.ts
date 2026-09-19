@@ -15,6 +15,7 @@ import NamespaceShareDemo from './components/NamespaceShareDemo.vue'
 import CgroupMemoryDemo from './components/CgroupMemoryDemo.vue'
 import OverlayfsDemo from './components/OverlayfsDemo.vue'
 import CriCallSequenceDemo from './components/CriCallSequenceDemo.vue'
+import RuncLifecycleDemo from './components/RuncLifecycleDemo.vue'
 import type { Theme } from 'vitepress'
 
 export default {
@@ -34,5 +35,6 @@ export default {
     app.component('CgroupMemoryDemo', CgroupMemoryDemo)
     app.component('OverlayfsDemo', OverlayfsDemo)
     app.component('CriCallSequenceDemo', CriCallSequenceDemo)
+    app.component('RuncLifecycleDemo', RuncLifecycleDemo)
   },
 } satisfies Theme
