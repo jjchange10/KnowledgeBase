@@ -25,6 +25,11 @@ Kubernetesは、コンテナ化されたアプリケーションのデプロイ�
   <div class="card-desc">Kubernetes APIをGoから叩くclient-goの基礎。クライアントの作り方、Informer、Scheme/RESTMapperの仕組み。</div>
 </a>
 
+<a class="simple-card" href="/KnowledgeBase/infrastracture/kubernetes/internals/">
+  <div class="card-title">Kubernetesの内部構造</div>
+  <div class="card-desc">公式ドキュメントベースで、コンテナランタイムやnamespaces・cgroups・overlayfsなど低レイヤーの仕組みを深掘り。</div>
+</a>
+
 </div>
 
 ## 公式ドキュメント

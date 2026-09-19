@@ -136,6 +136,14 @@ export default defineConfig({
             { text: 'InformerとWork Queue', link: '/infrastracture/kubernetes/client-go/informers-workqueue' },
             { text: 'API Machinery（Kind・GVK・GVR・Scheme）', link: '/infrastracture/kubernetes/client-go/api-machinery' },
           ]
+        },
+        {
+          text: 'Kubernetesの内部構造',
+          collapsed: false,
+          items: [
+            { text: 'はじめに', link: '/infrastracture/kubernetes/internals/' },
+            { text: 'コンテナの正体（namespaces・cgroups・overlayfs）', link: '/infrastracture/kubernetes/internals/container-fundamentals' },
+          ]
         }
       ],
       '/infrastracture/argo': [

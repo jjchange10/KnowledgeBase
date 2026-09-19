@@ -11,6 +11,9 @@ import GvrExplorerDemo from './components/GvrExplorerDemo.vue'
 import RequestPipelineDemo from './components/RequestPipelineDemo.vue'
 import ReconcileLoopDemo from './components/ReconcileLoopDemo.vue'
 import SchemeResolverDemo from './components/SchemeResolverDemo.vue'
+import NamespaceShareDemo from './components/NamespaceShareDemo.vue'
+import CgroupMemoryDemo from './components/CgroupMemoryDemo.vue'
+import OverlayfsDemo from './components/OverlayfsDemo.vue'
 import type { Theme } from 'vitepress'
 
 export default {
@@ -26,5 +29,8 @@ export default {
     app.component('RequestPipelineDemo', RequestPipelineDemo)
     app.component('ReconcileLoopDemo', ReconcileLoopDemo)
     app.component('SchemeResolverDemo', SchemeResolverDemo)
+    app.component('NamespaceShareDemo', NamespaceShareDemo)
+    app.component('CgroupMemoryDemo', CgroupMemoryDemo)
+    app.component('OverlayfsDemo', OverlayfsDemo)
   },
 } satisfies Theme
