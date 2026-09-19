@@ -143,6 +143,7 @@ export default defineConfig({
           items: [
             { text: 'はじめに', link: '/infrastracture/kubernetes/internals/' },
             { text: 'コンテナの正体（namespaces・cgroups・overlayfs）', link: '/infrastracture/kubernetes/internals/container-fundamentals' },
+            { text: 'CRIとcontainerdの実際のアーキテクチャ', link: '/infrastracture/kubernetes/internals/cri-containerd' },
           ]
         }
       ],

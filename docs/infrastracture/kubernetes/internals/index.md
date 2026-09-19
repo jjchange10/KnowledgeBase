@@ -11,6 +11,11 @@
   <div class="card-desc">「コンテナ」はVMではなく普通のLinuxプロセス。それを成立させているカーネルの3つの機能を、実際のアルゴリズムを再現したデモ付きで学ぶ。</div>
 </a>
 
+<a class="simple-card" href="/KnowledgeBase/infrastracture/kubernetes/internals/cri-containerd">
+  <div class="card-title">CRIとcontainerdの実際のアーキテクチャ</div>
+  <div class="card-desc">kubeletがnamespaces/cgroupsをどう組み立てているか。CRI・containerd・shim・runcのレイヤー構造と、実際のCRI呼び出し順序をデモで確認。</div>
+</a>
+
 </div>
 
 ## このセクションのスコープ
